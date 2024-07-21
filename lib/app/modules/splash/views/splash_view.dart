@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iic_radio/utils/app_colors.dart';
+import 'package:iic_radio/utils/app_fonts.dart';
 
 import '../controllers/splash_controller.dart';
 
@@ -9,6 +11,7 @@ class SplashView extends GetView<SplashController> {
   const SplashView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    controller;
     return Scaffold(
       backgroundColor: Colors.black,
       body: SizedBox(
@@ -43,14 +46,14 @@ class SplashView extends GetView<SplashController> {
                       Text(
                         "powered by",
                         style: TextStyle(
-                            fontFamily: "sans-regular",
-                            color: Color(0xffCFCDCD),
+                            fontFamily: AppFonts.regular,
+                            color: AppColors.secondaryColor,
                             fontSize: 10),
                       ),
                       Text(
                         "IIC Digital University\nKerala",
                         style: TextStyle(
-                          fontFamily: "sans-bold",
+                          fontFamily: AppFonts.bold,
                           color: Colors.white,
                         ),
                       ),
