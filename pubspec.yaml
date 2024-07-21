@@ -9,6 +9,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.6
   google_fonts: ^6.2.1
+  radio_player: ^1.6.0
   flutter: 
     sdk: flutter
 

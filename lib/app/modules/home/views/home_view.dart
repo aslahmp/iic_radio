@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iic_radio/utils/app_colors.dart';
 import 'package:iic_radio/utils/app_fonts.dart';
-import 'package:flutter_radio_player/flutter_radio_player.dart';
-import 'package:flutter_radio_player/models/frp_source_modal.dart';
 
 import '../controllers/home_controller.dart';
-import 'frp_player.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -26,11 +23,7 @@ class HomeView extends GetView<HomeController> {
               ),
               nowPlaying(),
               player(),
-              FRPlayer(
-                flutterRadioPlayer: controller.flutterRadioPlayer,
-                frpSource: controller.frpSource,
-                useIcyData: true,
-              ),
+
               // Padding(
               //   padding: EdgeInsets.only(left: 10),
               //   child: streamingNext(),
@@ -45,6 +38,23 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: GetBuilder<HomeController>(
+        builder: (_) {
+          return FloatingActionButton(
+            onPressed: () {
+              controller.isPlaying
+                  ? controller.radioPlayer.pause()
+                  : controller.radioPlayer.play();
+            },
+            tooltip: 'Control button',
+            child: Icon(
+              controller.isPlaying
+                  ? Icons.pause_rounded
+                  : Icons.play_arrow_rounded,
+            ),
+          );
+        },
       ),
     );
   }
@@ -175,10 +185,10 @@ class player extends StatelessWidget {
                   fontSize: 24,
                 ),
               ),
-              Image.asset(
-                'assets/play.png',
-                height: 80,
-              ),
+              // Image.asset(
+              //   'assets/play.png',
+              //   height: 80,
+              // ),
             ],
           ),
         ),
@@ -219,10 +229,10 @@ class nowPlaying extends StatelessWidget {
             ),
           ],
         ),
-        Image.asset(
-          'assets/voice.png',
-          height: 80,
-        ),
+        // Image.asset(
+        //   'assets/voice.png',
+        //   height: 80,
+        // ),
       ],
     );
   }
