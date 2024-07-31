@@ -10,22 +10,24 @@ class HomeController extends GetxController {
   //TODO: Implement HomeController
   var url = 'http://103.156.188.31:8000/stream';
   // var url = 'https://demo.azuracast.com/public/azuratest_radio';
-  bool isOnline = false;
+  bool isOnline = true;
   RadioPlayer radioPlayer = RadioPlayer();
-  bool isPlaying = true;
+  bool isPlaying = false;
   List<String>? metadata;
   late Timer _timer;
   late Duration _duration;
   @override
   void onInit() {
     super.onInit();
+    checkWorking();
+    _startCountdown();
   }
 
   void checkWorking() async {
     print('cheking');
-    AppLoader.instance.showLoader();
+    // AppLoader.instance.showLoader();
     var value = await Repo().isWorking(url);
-    AppLoader.instance.dismissDialog();
+    // AppLoader.instance.dismissDialog();
     print(value);
     if (value) {
       isOnline = true;
@@ -45,14 +47,9 @@ class HomeController extends GetxController {
 
       // imagePath: 'assets/cover.jpg',
     );
+    radioPlayer.stop();
 
-    radioPlayer.stateStream.listen(
-      (value) {
-        isPlaying = value;
-        update();
-      },
-    );
-    await radioPlayer.play();
+    // await radioPlayer.play();
     radioPlayer.pause();
   }
 
@@ -69,10 +66,10 @@ class HomeController extends GetxController {
     var t = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       t++;
-      if (t == 5) {
-        checkWorking();
-        t = 0;
-      }
+      // if (t == 5) {
+      //   checkWorking();
+      //   t = 0;
+      // }
       _duration = _duration - Duration(seconds: 1);
       if (_duration.isNegative) {
         _timer.cancel();
@@ -109,8 +106,8 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    super.onClose();
     _timer.cancel();
     radioPlayer.stop();
-    super.onClose();
   }
 }
