@@ -10,8 +10,12 @@ dependencies:
   get: 4.6.6
   google_fonts: ^6.2.1
   radio_player: ^1.6.0
+  lottie: ^3.1.2
+  # firebase_core:
   flutter: 
     sdk: flutter
+  animated_text_kit: ^4.2.2
+  http: ^1.2.2
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

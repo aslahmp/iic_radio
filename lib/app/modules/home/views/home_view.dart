@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iic_radio/utils/app_colors.dart';
 import 'package:iic_radio/utils/app_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -12,25 +13,46 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(
-                height: 20,
+                height: 1,
               ),
               nowPlaying(),
-              player(),
+              // TextField(
+              //   onChanged: (value) {
+              //     controller.url = value;
+              //     controller.checkWorking();
+              //   },
+              // ),
+
+              GetBuilder<HomeController>(builder: (controller) {
+                return controller.isOnline ? player() : OffLinePlayer();
+              }),
+
+              GetBuilder<HomeController>(builder: (controller) {
+                var gradient = LinearGradient(
+                  colors: [
+                    Color(0xffCA005E),
+                    Color(0xff7000FF),
+                  ],
+                );
+                return NextShow(gradient: gradient);
+              }),
 
               // Padding(
               //   padding: EdgeInsets.only(left: 10),
               //   child: streamingNext(),
               // ),
-              // SizedBox(
-              //   height: 10,
-              // ),
+              SizedBox(
+                height: 1,
+              ),
               // nextStreamingTile(),
               // nextStreamingTile(),
               // nextStreamingTile(),
@@ -39,22 +61,55 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
       ),
-      floatingActionButton: GetBuilder<HomeController>(
-        builder: (_) {
-          return FloatingActionButton(
-            onPressed: () {
-              controller.isPlaying
-                  ? controller.radioPlayer.pause()
-                  : controller.radioPlayer.play();
-            },
-            tooltip: 'Control button',
-            child: Icon(
-              controller.isPlaying
-                  ? Icons.pause_rounded
-                  : Icons.play_arrow_rounded,
-            ),
-          );
-        },
+    );
+  }
+}
+
+class NextShow extends GetView<HomeController> {
+  const NextShow({
+    super.key,
+    required this.gradient,
+  });
+
+  final LinearGradient gradient;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: dec(radius: 20),
+      width: double.infinity,
+      padding: EdgeInsets.only(left: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(controller.isOnline ? 'AI RJ SRUTHI' : 'Next Show in',
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                  )),
+              ShaderMask(
+                shaderCallback: (bounds) => gradient.createShader(
+                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                ),
+                child: Text(
+                  controller.isOnline ? 'ON AIR' : controller.formatDuration(),
+                  style: TextStyle(
+                    color: AppColors.secondaryColor,
+                    fontFamily: AppFonts.regular,
+                    fontSize: 28,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Lottie.network(
+            'https://lottie.host/7127ec20-de00-4700-95d9-9e9ec52c3442/oybvFbGVa4.json',
+            height: 100,
+            animate: controller.isOnline,
+          )
+        ],
       ),
     );
   }
@@ -127,72 +182,94 @@ class nextStreamingTile extends StatelessWidget {
   }
 }
 
-class streamingNext extends StatelessWidget {
-  const streamingNext({
-    super.key,
-  });
+class OffLinePlayer extends GetView<HomeController> {
+  const OffLinePlayer({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Streaming",
-          style: TextStyle(
-            color: AppColors.secondaryColor,
-            fontFamily: AppFonts.regular,
-            fontSize: 18,
+  Widget build(
+    BuildContext context,
+  ) {
+    return Container(
+      decoration: dec(),
+      padding: EdgeInsets.all(20),
+      width: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 40,
           ),
-        ),
-        Text(
-          "Next",
-          style: TextStyle(
-            color: AppColors.primaryColor,
-            fontFamily: AppFonts.bold,
-            fontSize: 18,
+          Lottie.network(
+            'https://lottie.host/9ceb047d-6ffc-49ec-9c1c-bd3a4fdc836f/Nh4XmRoIbm.json',
+            // height: 360,
+            // fit: BoxFit,
           ),
-        ),
-      ],
+          SizedBox(
+            height: 60,
+          ),
+          Text('Currently Offline',
+              style: TextStyle(
+                color: AppColors.primaryColor,
+                fontFamily: AppFonts.bold,
+                fontSize: 16,
+              )),
+          Text('Show Time : Everyday at 8 PM ',
+              style: TextStyle(
+                color: AppColors.secondaryColor,
+                fontFamily: AppFonts.regular,
+                fontSize: 13,
+              )),
+          SizedBox(
+            height: 40,
+          ),
+        ],
+      ),
     );
   }
 }
 
-class player extends StatelessWidget {
+class player extends GetView<HomeController> {
   const player({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(
-          'assets/Rectangle.png',
-          height: 360,
-          fit: BoxFit.fill,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "Good afternoon!\nIt's currently 02:49 PM. Welcome to another exciting episode of Techno Tunes on DUK college FM!",
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontFamily: AppFonts.bold,
-                  fontSize: 24,
-                ),
-              ),
-              // Image.asset(
-              //   'assets/play.png',
-              //   height: 80,
-              // ),
-            ],
+  Widget build(
+    BuildContext context,
+  ) {
+    return Container(
+      decoration: dec(),
+      height: 360,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              controller.updateStatus();
+            },
+            child: Lottie.network(
+              'https://lottie.host/59ba385f-88c4-4c2a-97aa-19b8e0b6ec03/Fmy5FSMLdI.json',
+              animate: controller.isPlaying,
+              height: 360,
+              fit: BoxFit.fill,
+            ),
           ),
-        ),
-      ],
+          Center(
+            // top: 145,
+            // left: 145,
+            child: IconButton(
+              onPressed: () {
+                controller.updateStatus();
+              },
+              // tooltip: 'Control button',
+              icon: Icon(
+                size: 50,
+                controller.isPlaying
+                    ? Icons.pause_rounded
+                    : Icons.play_arrow_rounded,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -204,36 +281,54 @@ class nowPlaying extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "now playing",
-              style: TextStyle(
-                color: AppColors.secondaryColor,
-                fontFamily: AppFonts.regular,
-                fontSize: 18,
+    return Container(
+      decoration: dec(),
+      padding: EdgeInsets.only(right: 20),
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/rj.png',
+            height: 90,
+          ),
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Generating",
+                style: TextStyle(
+                  color: AppColors.secondaryColor,
+                  fontFamily: AppFonts.regular,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            Text(
-              "Techno Tunes",
-              style: TextStyle(
-                color: AppColors.primaryColor,
-                fontFamily: AppFonts.bold,
-                fontSize: 24,
+              Text(
+                "Best AI Content",
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontFamily: AppFonts.bold,
+                  fontSize: 20,
+                ),
               ),
-            ),
-          ],
-        ),
-        // Image.asset(
-        //   'assets/voice.png',
-        //   height: 80,
-        // ),
-      ],
+            ],
+          ),
+          Spacer(),
+          SizedBox(
+            height: 100,
+            width: 50,
+            child: Lottie.network(
+                'https://lottie.host/98bc09ab-c9c5-47c6-9953-2b39a950467e/UNd7FsVpzn.json'),
+          ),
+        ],
+      ),
     );
   }
+}
+
+BoxDecoration dec({double radius = 50}) {
+  return BoxDecoration(
+    color: Color(0xff191919),
+    borderRadius: BorderRadius.circular(radius),
+  );
 }

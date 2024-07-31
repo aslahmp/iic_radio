@@ -1,29 +1,36 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_radio_player (0.0.1):
+    - Flutter
+    - SwiftAudioEx
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - radio_player (0.0.1):
-    - Flutter
+  - SwiftAudioEx (1.1.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_radio_player (from `.symlinks/plugins/flutter_radio_player/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - radio_player (from `.symlinks/plugins/radio_player/ios`)
+
+SPEC REPOS:
+  trunk:
+    - SwiftAudioEx
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_radio_player:
+    :path: ".symlinks/plugins/flutter_radio_player/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  radio_player:
-    :path: ".symlinks/plugins/radio_player/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_radio_player: 1ef266ab949eba8d0b29b9d75761cc2faf912004
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  radio_player: f23691d16aafc0c21dab0b3006ac29f05a22398f
+  SwiftAudioEx: f6aa653770f3a0d3851edaf8d834a30aee4a7646
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 4bb0d5af7b0a7a18570b26cd09a55bf9a905f81f
 
 COCOAPODS: 1.12.1

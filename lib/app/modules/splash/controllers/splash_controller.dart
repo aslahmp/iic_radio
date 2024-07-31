@@ -6,7 +6,7 @@ class SplashController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
     Get.offNamed('/home');
     super.onInit();
   }
