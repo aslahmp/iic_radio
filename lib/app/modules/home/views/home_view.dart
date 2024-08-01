@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iic_radio/utils/app_colors.dart';
 import 'package:iic_radio/utils/app_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -17,7 +18,7 @@ class HomeView extends GetView<HomeController> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -53,6 +54,12 @@ class HomeView extends GetView<HomeController> {
               SizedBox(
                 height: 1,
               ),
+              Text('Born in thingQbator | Powered by IIC DUK',
+                  style: TextStyle(
+                    color: AppColors.secondaryColor,
+                    fontFamily: AppFonts.regular,
+                    fontSize: 14,
+                  )),
               // nextStreamingTile(),
               // nextStreamingTile(),
               // nextStreamingTile(),
@@ -97,7 +104,7 @@ class NextShow extends GetView<HomeController> {
                   controller.isOnline ? 'ON AIR' : controller.formatDuration(),
                   style: TextStyle(
                     color: AppColors.secondaryColor,
-                    fontFamily: AppFonts.regular,
+                    fontFamily: 'gotham',
                     fontSize: 28,
                   ),
                 ),
@@ -240,16 +247,22 @@ class player extends GetView<HomeController> {
       decoration: dec(),
       height: 360,
       child: Stack(
+        fit: StackFit.expand,
         children: [
-          GestureDetector(
-            onTap: () {
-              controller.updateStatus();
-            },
-            child: Lottie.network(
-              'https://lottie.host/59ba385f-88c4-4c2a-97aa-19b8e0b6ec03/Fmy5FSMLdI.json',
-              animate: controller.isPlaying,
-              height: 360,
-              fit: BoxFit.fill,
+          Center(
+            child: SizedBox(
+              width: 360,
+              child: GestureDetector(
+                onTap: () {
+                  controller.updateStatus();
+                },
+                child: Lottie.network(
+                  'https://lottie.host/59ba385f-88c4-4c2a-97aa-19b8e0b6ec03/Fmy5FSMLdI.json',
+                  animate: controller.isPlaying,
+                  height: 360,
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
           ),
           Center(

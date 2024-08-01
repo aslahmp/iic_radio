@@ -94,10 +94,10 @@ class HomeController extends GetxController {
   void updateStatus() async {
     isPlaying = !isPlaying;
     if (isPlaying) {
-      AppLoader.instance.showLoader();
+      // AppLoader.instance.showLoader();
       await radioPlayer.play();
-      AppLoader.instance.dismissDialog();
-      radioPlayer.ignoreIcyMetadata();
+      // AppLoader.instance.dismissDialog();
+      // radioPlayer.ignoreIcyMetadata();
     } else {
       radioPlayer.stop();
     }

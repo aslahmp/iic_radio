@@ -33,5 +33,8 @@ flutter:
     - family: sans-bold
       fonts: 
         - asset: assets/GoogleSans-Bold.ttf
+    - family: gotham
+      fonts: 
+        - asset: assets/GothamBold.ttf
 
 
