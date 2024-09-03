@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:get/get.dart';
 import 'package:iic_radio/app/modules/home/controllers/app_loader.dart';
+import 'package:radio_player/radio_player.dart';
 
 import 'repo.dart';
 
@@ -11,7 +11,7 @@ class HomeController extends GetxController {
   var url = 'http://103.156.188.31:8000/stream';
   // var url = 'https://demo.azuracast.com/public/azuratest_radio';
   bool isOnline = true;
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  final assetsAudioPlayer = RadioPlayer();
   bool isPlaying = false;
   List<String>? metadata;
   late Timer _timer;
@@ -41,9 +41,11 @@ class HomeController extends GetxController {
   }
 
   void initRadioPlayer() async {
-    await assetsAudioPlayer.open(
-      Audio.liveStream(url),
+    await assetsAudioPlayer.setChannel(
+      title: 'IIC Radio',
+      url: url,
     );
+    assetsAudioPlayer.stateStream.listen((value) {});
   }
 
   void _startCountdown() {
