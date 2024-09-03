@@ -1,17 +1,17 @@
 import 'dart:async';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:get/get.dart';
 import 'package:iic_radio/app/modules/home/controllers/app_loader.dart';
 
 import 'repo.dart';
-import 'package:radio_player/radio_player.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
   var url = 'http://103.156.188.31:8000/stream';
   // var url = 'https://demo.azuracast.com/public/azuratest_radio';
   bool isOnline = true;
-  RadioPlayer radioPlayer = RadioPlayer();
+  final assetsAudioPlayer = AssetsAudioPlayer();
   bool isPlaying = false;
   List<String>? metadata;
   late Timer _timer;
@@ -41,16 +41,9 @@ class HomeController extends GetxController {
   }
 
   void initRadioPlayer() async {
-    radioPlayer.setChannel(
-      title: 'Radio Player',
-      url: url,
-
-      // imagePath: 'assets/cover.jpg',
+    await assetsAudioPlayer.open(
+      Audio.liveStream(url),
     );
-    radioPlayer.stop();
-
-    // await radioPlayer.play();
-    radioPlayer.pause();
   }
 
   void _startCountdown() {
@@ -95,11 +88,11 @@ class HomeController extends GetxController {
     isPlaying = !isPlaying;
     if (isPlaying) {
       // AppLoader.instance.showLoader();
-      await radioPlayer.play();
+      await assetsAudioPlayer.play();
       // AppLoader.instance.dismissDialog();
-      // radioPlayer.ignoreIcyMetadata();
+      // assetsAudioPlayer.ignoreIcyMetadata();
     } else {
-      radioPlayer.stop();
+      assetsAudioPlayer.stop();
     }
     update();
   }
@@ -108,6 +101,6 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     _timer.cancel();
-    radioPlayer.stop();
+    assetsAudioPlayer.stop();
   }
 }
