@@ -20,7 +20,6 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     checkWorking();
-    _startCountdown();
   }
 
   void checkWorking() async {
