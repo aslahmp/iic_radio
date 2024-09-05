@@ -34,7 +34,7 @@ class HomeView extends GetView<HomeController> {
               // ),
 
               GetBuilder<HomeController>(builder: (controller) {
-                return controller.isOnline ? const player() : const OffLinePlayer();
+                return controller.isOnline ? player() : OffLinePlayer();
               }),
 
               GetBuilder<HomeController>(builder: (controller) {

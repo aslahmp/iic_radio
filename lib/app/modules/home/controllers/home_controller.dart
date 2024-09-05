@@ -32,7 +32,6 @@ class HomeController extends GetxController {
     print(value);
     if (value) {
       isOnline = true;
-      
     } else {
       isOnline = false;
       _startCountdown();
@@ -40,9 +39,9 @@ class HomeController extends GetxController {
     }
   }
 
-Future<void> downloadAndCacheAudio() async {
+  Future<void> downloadAndCacheAudio() async {
     try {
-      AppLoader.instance.showLoader();
+      // AppLoader.instance.showLoader();
       Directory tempDir = await getTemporaryDirectory();
 
       // Generate cached file path based on the last part of the URL (the file name)
@@ -78,9 +77,8 @@ Future<void> downloadAndCacheAudio() async {
     } catch (e) {
       print('Error downloading or caching audio: $e');
     }
-    AppLoader.instance.dismissDialog();
+    // AppLoader.instance.dismissDialog();
   }
-
 
   Future<void> initAudioPlayer() async {
     try {
@@ -119,7 +117,7 @@ Future<void> downloadAndCacheAudio() async {
   }
 
   @override
-void onReady() {
+  void onReady() {
     super.onReady();
 
     // Set up listeners for playback events
@@ -135,14 +133,13 @@ void onReady() {
     // checkWorking();
   }
 
-
   void updateStatus() async {
     isPlaying = !isPlaying;
 
     // Calculate the desired playback start time
     DateTime now = DateTime.now();
     DateTime startOfPlayback =
-        DateTime(now.year, now.month, now.day, 16, 22, 0);
+        DateTime(now.year, now.month, now.day, now.hour, now.minute, 0);
 
     // Calculate the elapsed time since the desired start time
     Duration elapsedSinceStart = now.difference(startOfPlayback);
@@ -152,6 +149,7 @@ void onReady() {
       print(
           'The current time is before the start time. Playback will not start.');
       isPlaying = false;
+      isOnline = false;
       update(); // Ensure UI update reflects playback state
       return;
     }
@@ -179,7 +177,6 @@ void onReady() {
       print('Error updating playback status: $e');
     }
   }
-
 
   @override
   void onClose() {
