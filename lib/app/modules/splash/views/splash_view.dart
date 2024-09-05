@@ -23,7 +23,7 @@ class SplashView extends GetView<SplashController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(),
+            const SizedBox(),
             Column(
               children: [
                 Lottie.network(
@@ -50,7 +50,7 @@ class SplashView extends GetView<SplashController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Generative AI Radio of',
                     style: TextStyle(
                       color: AppColors.primaryColor,

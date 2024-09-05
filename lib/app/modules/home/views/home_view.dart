@@ -16,16 +16,16 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
-              nowPlaying(),
+              const nowPlaying(),
               // TextField(
               //   onChanged: (value) {
               //     controller.url = value;
@@ -34,11 +34,11 @@ class HomeView extends GetView<HomeController> {
               // ),
 
               GetBuilder<HomeController>(builder: (controller) {
-                return controller.isOnline ? player() : OffLinePlayer();
+                return controller.isOnline ? const player() : const OffLinePlayer();
               }),
 
               GetBuilder<HomeController>(builder: (controller) {
-                var gradient = LinearGradient(
+                var gradient = const LinearGradient(
                   colors: [
                     Color(0xffCA005E),
                     Color(0xff7000FF),
@@ -51,10 +51,10 @@ class HomeView extends GetView<HomeController> {
               //   padding: EdgeInsets.only(left: 10),
               //   child: streamingNext(),
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
-              Text('Born in thingQbator | Powered by IIC DUK',
+              const Text('Born in thingQbator | Powered by IIC DUK',
                   style: TextStyle(
                     color: AppColors.secondaryColor,
                     fontFamily: AppFonts.regular,
@@ -85,7 +85,7 @@ class NextShow extends GetView<HomeController> {
     return Container(
       decoration: dec(radius: 20),
       width: double.infinity,
-      padding: EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -93,7 +93,7 @@ class NextShow extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(controller.isOnline ? 'AI RJ SRUTHI' : 'Next Show in',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.primaryColor,
                   )),
               ShaderMask(
@@ -102,7 +102,7 @@ class NextShow extends GetView<HomeController> {
                 ),
                 child: Text(
                   controller.isOnline ? 'ON AIR' : controller.formatDuration(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.secondaryColor,
                     fontFamily: 'gotham',
                     fontSize: 28,
@@ -130,6 +130,21 @@ class nextStreamingTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.all(10),
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.grey[500]!,
+            Colors.grey[800]!,
+          ],
+        ),
+      ),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -170,21 +185,6 @@ class nextStreamingTile extends StatelessWidget {
           ),
         ],
       ),
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      padding: EdgeInsets.all(10),
-      height: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.grey[500]!,
-            Colors.grey[800]!,
-          ],
-        ),
-      ),
     );
   }
 }
@@ -198,11 +198,11 @@ class OffLinePlayer extends GetView<HomeController> {
   ) {
     return Container(
       decoration: dec(),
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       width: double.infinity,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Lottie.network(
@@ -210,22 +210,22 @@ class OffLinePlayer extends GetView<HomeController> {
             // height: 360,
             // fit: BoxFit,
           ),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
-          Text('Currently Offline',
+          const Text('Currently Offline',
               style: TextStyle(
                 color: AppColors.primaryColor,
                 fontFamily: AppFonts.bold,
                 fontSize: 16,
               )),
-          Text('Show Time : Everyday at 8 PM ',
+          const Text('Show Time : Everyday at 8 PM ',
               style: TextStyle(
                 color: AppColors.secondaryColor,
                 fontFamily: AppFonts.regular,
                 fontSize: 13,
               )),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
         ],
@@ -296,7 +296,7 @@ class nowPlaying extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: dec(),
-      padding: EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(right: 20),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -326,7 +326,7 @@ class nowPlaying extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           SizedBox(
             height: 100,
             width: 50,
@@ -341,7 +341,7 @@ class nowPlaying extends StatelessWidget {
 
 BoxDecoration dec({double radius = 50}) {
   return BoxDecoration(
-    color: Color(0xff191919),
+    color: const Color(0xff191919),
     borderRadius: BorderRadius.circular(radius),
   );
 }

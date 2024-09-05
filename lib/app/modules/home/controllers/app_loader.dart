@@ -33,7 +33,7 @@ class AppLoader {
   }
 
   Widget _builder(BuildContext context) {
-    return Dialog(
+    return const Dialog(
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Center(
