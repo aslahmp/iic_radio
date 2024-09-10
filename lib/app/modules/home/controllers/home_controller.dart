@@ -142,19 +142,19 @@ class HomeController extends GetxController {
     // Calculate the desired playback start time
     DateTime now = DateTime.now();
     DateTime startOfPlayback =
-        DateTime(now.year, now.month, now.day, 16, 22, 0);
+        DateTime(now.year, now.month, now.day);
 
     // Calculate the elapsed time since the desired start time
     Duration elapsedSinceStart = now.difference(startOfPlayback);
 
     // Ensure the elapsed time is positive
-    if (elapsedSinceStart.isNegative) {
-      print(
-          'The current time is before the start time. Playback will not start.');
-      isPlaying = false;
-      update(); // Ensure UI update reflects playback state
-      return;
-    }
+    // if (elapsedSinceStart.isNegative) {
+    //   print(
+    //       'The current time is before the start time. Playback will not start.');
+    //   isPlaying = false;
+    //   update(); // Ensure UI update reflects playback state
+    //   return;
+    // }
 
     // Convert elapsed time to audio position (assuming the audio is in seconds)
     int playbackStartPosition = elapsedSinceStart.inSeconds;
@@ -162,7 +162,7 @@ class HomeController extends GetxController {
     try {
       if (isPlaying) {
         print('Starting playback from $playbackStartPosition seconds...');
-        await audioPlayer.seek(Duration(seconds: playbackStartPosition));
+        // await audioPlayer.seek(Duration(seconds: playbackStartPosition));
         await audioPlayer.play();
 
         // Ensure UI updates to reflect the animation start
