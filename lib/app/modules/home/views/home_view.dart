@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iic_radio/utils/app_colors.dart';
 import 'package:iic_radio/utils/app_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/home_controller.dart';
@@ -246,43 +247,45 @@ class player extends GetView<HomeController> {
     return Container(
       decoration: dec(),
       height: 360,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Center(
-            child: SizedBox(
-              width: 360,
-              child: GestureDetector(
-                onTap: () {
-                  controller.updateStatus();
-                },
-                child: Lottie.network(
-                  'https://lottie.host/59ba385f-88c4-4c2a-97aa-19b8e0b6ec03/Fmy5FSMLdI.json',
-                  animate: controller.isPlaying,
-                  height: 360,
-                  fit: BoxFit.fill,
+      child: controller.processingState == ProcessingState.loading
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+              fit: StackFit.expand,
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: 360,
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.updateStatus();
+                      },
+                      child: Lottie.network(
+                        'https://lottie.host/59ba385f-88c4-4c2a-97aa-19b8e0b6ec03/Fmy5FSMLdI.json',
+                        animate: controller.isPlaying,
+                        height: 360,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Center(
+                  // top: 145,
+                  // left: 145,
+                  child: IconButton(
+                    onPressed: () {
+                      controller.updateStatus();
+                    },
+                    // tooltip: 'Control button',
+                    icon: Icon(
+                      size: 50,
+                      controller.isPlaying
+                          ? Icons.pause_rounded
+                          : Icons.play_arrow_rounded,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Center(
-            // top: 145,
-            // left: 145,
-            child: IconButton(
-              onPressed: () {
-                controller.updateStatus();
-              },
-              // tooltip: 'Control button',
-              icon: Icon(
-                size: 50,
-                controller.isPlaying
-                    ? Icons.pause_rounded
-                    : Icons.play_arrow_rounded,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
