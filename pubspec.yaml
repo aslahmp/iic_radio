@@ -15,6 +15,7 @@ dependencies:
   just_audio: ^0.9.21
   path_provider: ^2.0.9
   flutter_downloader: ^1.7.1
+  
   # firebase_core:
   flutter: 
     sdk: flutter

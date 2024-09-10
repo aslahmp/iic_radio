@@ -1,29 +1,34 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
-import 'package:iic_radio/app/modules/home/controllers/app_loader.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'repo.dart';
 
 class HomeController extends GetxController {
   var url =
-      'https://audio.jukehost.co.uk/JhmPyZwXFsRfKiLPi3sq77XTBx8vUbIc'; // Replace with your MP3 URL
+      'https://5423-14-139-189-168.ngrok-free.app/stream/'; // Replace with your MP3 URL
   bool isOnline = true;
   final AudioPlayer audioPlayer = AudioPlayer();
   bool isPlaying = false;
-  late String cachedFilePath;
   late Timer _timer;
   late Duration _duration;
 
   @override
   void onInit() {
     super.onInit();
-    downloadAndCacheAudio();
+    initAudioPlayer();
     // checkWorking();
+  }
+
+  Future<void> initAudioPlayer() async {
+    try {
+      print('Initializing audio player with the streaming URL...');
+      await audioPlayer.setUrl(url); // Stream directly from the URL
+      print('Audio player initialized for streaming');
+    } catch (e) {
+      print('Error initializing audio player for streaming: $e');
+    }
   }
 
   void checkWorking() async {
@@ -36,56 +41,6 @@ class HomeController extends GetxController {
       isOnline = false;
       _startCountdown();
       update();
-    }
-  }
-
-  Future<void> downloadAndCacheAudio() async {
-    try {
-      // AppLoader.instance.showLoader();
-      Directory tempDir = await getTemporaryDirectory();
-
-      // Generate cached file path based on the last part of the URL (the file name)
-      String fileNameFromUrl = Uri.parse(url).pathSegments.last;
-      cachedFilePath = '${tempDir.path}/$fileNameFromUrl';
-      Dio dio = Dio();
-
-      print('Checking if the cached file exists: $cachedFilePath');
-
-      // Check if cached file exists
-      File cachedFile = File(cachedFilePath);
-      bool shouldDownload = true;
-
-      if (cachedFile.existsSync()) {
-        print('Cached file exists: $cachedFilePath');
-        // If cached file exists and has the same file name, skip the download
-        shouldDownload = false;
-        print('Cached file name matches the URL. No need to download.');
-      } else {
-        print('No matching cached file found.');
-      }
-
-      // Download the file if necessary
-      if (shouldDownload) {
-        print('Downloading new audio file from $url...');
-        await dio.download(url, cachedFilePath);
-        print('Download complete: $cachedFilePath');
-      }
-
-      print('Initializing audio player with the cached file...');
-      await initAudioPlayer();
-      print('Audio player initialized successfully.');
-    } catch (e) {
-      print('Error downloading or caching audio: $e');
-    }
-    // AppLoader.instance.dismissDialog();
-  }
-
-  Future<void> initAudioPlayer() async {
-    try {
-      await audioPlayer.setFilePath(cachedFilePath);
-      print('Audio player initialized');
-    } catch (e) {
-      print('Error initializing audio player: $e');
     }
   }
 
@@ -136,31 +91,9 @@ class HomeController extends GetxController {
   void updateStatus() async {
     isPlaying = !isPlaying;
 
-    // Calculate the desired playback start time
-    DateTime now = DateTime.now();
-    DateTime startOfPlayback =
-        DateTime(now.year, now.month, now.day, now.hour, now.minute, 0);
-
-    // Calculate the elapsed time since the desired start time
-    Duration elapsedSinceStart = now.difference(startOfPlayback);
-
-    // Ensure the elapsed time is positive
-    if (elapsedSinceStart.isNegative) {
-      print(
-          'The current time is before the start time. Playback will not start.');
-      isPlaying = false;
-      isOnline = false;
-      update(); // Ensure UI update reflects playback state
-      return;
-    }
-
-    // Convert elapsed time to audio position (assuming the audio is in seconds)
-    int playbackStartPosition = elapsedSinceStart.inSeconds;
-
     try {
       if (isPlaying) {
-        print('Starting playback from $playbackStartPosition seconds...');
-        await audioPlayer.seek(Duration(seconds: playbackStartPosition));
+        print('Starting playback...');
         await audioPlayer.play();
 
         // Ensure UI updates to reflect the animation start
