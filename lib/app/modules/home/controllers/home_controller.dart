@@ -1,3 +1,5 @@
+//check for "should be edited for final output"
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -172,7 +174,22 @@ final AudioPlayer _audioPlayer = AudioPlayer();
 
     // Calculate the desired playback start time
     DateTime now = DateTime.now();
-    DateTime scheduledTime = DateTime.parse('${_scheduledDate}T$_scheduledTime');
+    DateTime? scheduledTime;
+
+    try {
+      scheduledTime = DateTime.parse('${_scheduledDate}T$_scheduledTime');
+    } catch (e) {
+      print('Invalid scheduled time format: $e');
+      //should be edited for final output
+      Get.snackbar(
+      'Playback Error',
+      'Nothing has been scheduled for today',
+      snackPosition: SnackPosition.BOTTOM,
+      );
+      isPlaying = false;
+      update(); // Ensure UI update reflects playback state
+      return;
+    }
 
     // Calculate the elapsed time since the scheduled start time
     Duration elapsedSinceScheduled = now.difference(scheduledTime);
@@ -180,6 +197,11 @@ final AudioPlayer _audioPlayer = AudioPlayer();
     // Ensure the elapsed time is positive
     if (elapsedSinceScheduled.isNegative) {
       print('The current time is before the scheduled time. Playback will not start.');
+      Get.snackbar(
+        'Playback Error',
+        'Try again later',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       isPlaying = false;
       update(); // Ensure UI update reflects playback state
       return;
@@ -202,6 +224,13 @@ final AudioPlayer _audioPlayer = AudioPlayer();
           update();
         } else {
           print('The seeked position is beyond the audio duration.');
+
+          //should be edited for final output
+            Get.snackbar(
+            'Playback Error',
+            'Try again later',
+            snackPosition: SnackPosition.BOTTOM,
+            );
           isPlaying = false;
           update(); // Ensure UI update reflects playback state
         }
